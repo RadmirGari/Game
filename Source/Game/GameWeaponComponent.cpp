@@ -20,6 +20,10 @@ UGameWeaponComponent::UGameWeaponComponent()
 	MuzzleOffset = FVector(100.0f, 0.0f, 10.0f);
 }
 
+void UGameWeaponComponent::use(){
+    Fire();
+}
+
 
 void UGameWeaponComponent::Fire()
 {

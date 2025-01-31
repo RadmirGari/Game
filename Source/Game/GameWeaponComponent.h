@@ -4,12 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "items/weapons/Gun.h"
 #include "GameWeaponComponent.generated.h"
 
 class AGameCharacter;
 
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class GAME_API UGameWeaponComponent : public USkeletalMeshComponent
+class GAME_API UGameWeaponComponent : public USkeletalMeshComponent, public IGun
 {
 	GENERATED_BODY()
 
@@ -48,7 +49,8 @@ public:
 	/** Make the weapon Fire a Projectile */
 	UFUNCTION(BlueprintCallable, Category="Weapon")
 	void Fire();
-
+    
+    virtual void use() override;
 protected:
 	/** Ends gameplay for this component. */
 	UFUNCTION()
