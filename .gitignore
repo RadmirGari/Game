@@ -1,0 +1,17 @@
+# IDE-specific files
+*.suo
+*.user
+*.sln
+*.xcodeproj
+*.xcworkspace
+.vscode/
+.idea/
+
+# Build artifacts
+Build/
+Binaries/
+Intermediate/
+DerivedDataCache/
+
+# Saved game data or temporary files
+Saved/
