@@ -24,5 +24,6 @@ class GAME_API IUseable : public IPickable
 
 
 public:
-    virtual void use() = 0;
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Item")
+    void use();
 };

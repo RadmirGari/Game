@@ -23,6 +23,4 @@ class GAME_API IGun: public IWeapon
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-    virtual void use() = 0;
-    
 };

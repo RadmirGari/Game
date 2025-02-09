@@ -5,7 +5,9 @@
 #include "CoreMinimal.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "items/weapons/Gun.h"
+#include "GameProjectile.h"
 #include "GameWeaponComponent.generated.h"
+
 
 class AGameCharacter;
 
@@ -45,17 +47,16 @@ public:
 	/** Attaches the actor to a FirstPersonCharacter */
 	UFUNCTION(BlueprintCallable, Category="Weapon")
 	bool AttachWeapon(AGameCharacter* TargetCharacter);
-
+    
+    virtual void use_Implementation() override;
 	/** Make the weapon Fire a Projectile */
 	UFUNCTION(BlueprintCallable, Category="Weapon")
 	void Fire();
-    
-    virtual void use() override;
 protected:
 	/** Ends gameplay for this component. */
 	UFUNCTION()
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-
+    
 private:
 	/** The Character holding this weapon*/
 	AGameCharacter* Character;

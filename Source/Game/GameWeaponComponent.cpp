@@ -18,26 +18,32 @@ UGameWeaponComponent::UGameWeaponComponent()
 {
 	// Default offset from the character location for projectiles to spawn
 	MuzzleOffset = FVector(100.0f, 0.0f, 10.0f);
+    
 }
 
-void UGameWeaponComponent::use(){
+void UGameWeaponComponent::use_Implementation(){
+    GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("why!"));
     Fire();
 }
 
 
 void UGameWeaponComponent::Fire()
 {
+
 	if (Character == nullptr || Character->GetController() == nullptr)
 	{
+
 		return;
 	}
 
 	// Try and fire a projectile
 	if (ProjectileClass != nullptr)
 	{
+        
 		UWorld* const World = GetWorld();
 		if (World != nullptr)
 		{
+           
 			APlayerController* PlayerController = Cast<APlayerController>(Character->GetController());
 			const FRotator SpawnRotation = PlayerController->PlayerCameraManager->GetCameraRotation();
 			// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
@@ -51,6 +57,7 @@ void UGameWeaponComponent::Fire()
 			World->SpawnActor<AGameProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
 		}
 	}
+   
 	
 	// Try and play the sound if specified
 	if (FireSound != nullptr)
@@ -83,7 +90,7 @@ bool UGameWeaponComponent::AttachWeapon(AGameCharacter* TargetCharacter)
 	// Attach the weapon to the First Person Character
 	FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, true);
 	AttachToComponent(Character->GetMesh1P(), AttachmentRules, FName(TEXT("GripPoint")));
-
+    
 	// Set up action bindings
 	if (APlayerController* PlayerController = Cast<APlayerController>(Character->GetController()))
 	{

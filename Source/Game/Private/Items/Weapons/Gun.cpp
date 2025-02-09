@@ -3,4 +3,3 @@
 
 #include "Items/Weapons/Gun.h"
 
-// Add default functionality here for any IGun functions that are not pure virtual.
