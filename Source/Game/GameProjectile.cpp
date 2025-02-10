@@ -2,9 +2,11 @@
 
 #include "GameProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Damageable.h"
 #include "Components/SphereComponent.h"
 
-AGameProjectile::AGameProjectile() 
+
+AGameProjectile::AGameProjectile()
 {
 	// Use a sphere as a simple collision representation
 	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
@@ -33,11 +35,17 @@ AGameProjectile::AGameProjectile()
 
 void AGameProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	// Only add impulse and destroy projectile if we hit a physics
-	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && OtherComp->IsSimulatingPhysics())
-	{
-		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
+    
+    if(OtherActor == nullptr || OtherActor == this || OtherComp == nullptr || !OtherComp->IsSimulatingPhysics() || !OtherActor->Implements<UDamageable>()){
+        return;
+    }
+	
+    GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Does stuff"));
+    IDamageable::Execute_takeDamage(OtherActor, 20);
 
-		Destroy();
-	}
+    Destroy();
+}
+
+int AGameProjectile::getDamage_Implementation(){
+    return AGameProjectile::DAMAGE;
 }

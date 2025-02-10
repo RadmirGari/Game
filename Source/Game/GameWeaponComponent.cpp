@@ -21,15 +21,10 @@ UGameWeaponComponent::UGameWeaponComponent()
     
 }
 
-void UGameWeaponComponent::use_Implementation(){
-    GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("why!"));
-    Fire();
-}
 
-
-void UGameWeaponComponent::Fire()
+void UGameWeaponComponent::use_Implementation()
 {
-
+    GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Working"));
 	if (Character == nullptr || Character->GetController() == nullptr)
 	{
 
@@ -103,7 +98,7 @@ bool UGameWeaponComponent::AttachWeapon(AGameCharacter* TargetCharacter)
 		if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerController->InputComponent))
 		{
 			// Fire
-			EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Triggered, this, &UGameWeaponComponent::Fire);
+			EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Triggered, this, &UGameWeaponComponent::use_Implementation);
 		}
 	}
 
