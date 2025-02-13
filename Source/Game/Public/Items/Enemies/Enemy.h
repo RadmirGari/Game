@@ -7,20 +7,18 @@
 #include "Damageable.h"
 #include "Enemy.generated.h"
 
-// This class does not need to be modified.
-UINTERFACE(MinimalAPI)
-class UEnemy : public UInterface
+
+UINTERFACE(MinimalAPI, Blueprintable)
+class UEnemy : public UDamageable // Inherit from UInterface NOT UDamageable
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 };
 
-/**
- * 
- */
-class GAME_API IEnemy: public IDamageable
+// Correct IEnemy declaration
+class GAME_API IEnemy : public IDamageable // Implements IDamageable interface
 {
-	GENERATED_BODY()
-
-	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
+    GENERATED_BODY()
 public:
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    int getDamage();
 };

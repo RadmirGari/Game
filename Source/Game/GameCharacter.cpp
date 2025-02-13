@@ -20,7 +20,6 @@ AGameCharacter::AGameCharacter()
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
-		
 	// Create a CameraComponent	
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
 	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
@@ -34,7 +33,8 @@ AGameCharacter::AGameCharacter()
 	Mesh1P->bCastDynamicShadow = false;
 	Mesh1P->CastShadow = false;
 	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
-
+    
+    health = AGameCharacter::START_HEALTH;
 }
 
 //////////////////////////////////////////////////////////////////////////// Input
@@ -99,4 +99,12 @@ void AGameCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void AGameCharacter::takeDamage_Implementation(int damage){
+    health = health - damage;
+    GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("Health: %d"), health));
+    if(health <= 0){
+        GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("You died"));
+    }
 }

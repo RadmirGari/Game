@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
+#include "Damageable.h"
 #include "GameCharacter.generated.h"
 
 class UInputComponent;
@@ -17,7 +18,7 @@ struct FInputActionValue;
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
 UCLASS(config=Game)
-class AGameCharacter : public ACharacter
+class AGameCharacter : public ACharacter, public IDamageable
 {
 	GENERATED_BODY()
 
@@ -44,6 +45,8 @@ class AGameCharacter : public ACharacter
 	/** Look Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* LookAction;
+    
+    virtual void takeDamage_Implementation(int damage) override;
 	
 public:
 	AGameCharacter();
@@ -66,6 +69,8 @@ public:
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
+    static constexpr int START_HEALTH = 100;
+    int health;
 
 };
 

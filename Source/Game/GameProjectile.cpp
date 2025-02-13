@@ -3,6 +3,7 @@
 #include "GameProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Damageable.h"
+#include "Kismet/GameplayStatics.h"
 #include "Components/SphereComponent.h"
 
 
@@ -36,13 +37,22 @@ AGameProjectile::AGameProjectile()
 void AGameProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
     
-    if(OtherActor == nullptr || OtherActor == this || OtherComp == nullptr || !OtherComp->IsSimulatingPhysics() || !OtherActor->Implements<UDamageable>()){
+    if(OtherActor == nullptr || OtherActor == this || OtherComp == nullptr){
         return;
     }
-	
-    GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Does stuff"));
-    IDamageable::Execute_takeDamage(OtherActor, 20);
-
+    APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+    if(OtherActor == PlayerPawn){
+        return;
+    }
+    
+    if (OtherActor->Implements<UDamageable>()) {
+        IDamageable::Execute_takeDamage(OtherActor, AGameProjectile::getDamage_Implementation());
+    }
+    
+    if (OtherComp->IsSimulatingPhysics()){
+       OtherComp->AddImpulseAtLocation(ProjectileMovement->Velocity * 10.0f, Hit.ImpactPoint);
+   }
+    
     Destroy();
 }
 
