@@ -53,6 +53,9 @@ public:
     
     void startAttackTimer();
     
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+    UAnimMontage* AttackMontage;
+    
 private:
     // AI Perception component for sensing
     UPROPERTY(VisibleAnywhere, Category = "AI")
@@ -69,5 +72,7 @@ private:
     APawn* TargetPawn;
     
     FTimerHandle AttackTimerHandle;
-       bool isAttacking;
+    bool isAttacking;
+    
+   
 };

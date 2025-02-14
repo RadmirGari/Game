@@ -148,6 +148,10 @@ void ABasicEnemy::attack()
        return;
    }
 
+    if (AttackMontage && GetMesh()->GetAnimInstance()){
+        GetMesh()->GetAnimInstance()->Montage_Play(AttackMontage);
+    }
+
    IDamageable::Execute_takeDamage(TargetPawn, ABasicEnemy::getDamage_Implementation());
 }
 
