@@ -54,7 +54,7 @@ public:
     void startAttackTimer();
     
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
-    UAnimMontage* AttackMontage;
+    UAnimMontage* moveAnimation;
     
 private:
     // AI Perception component for sensing
