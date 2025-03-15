@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Enemy.h"
+#include "SpawnPoint.h"
 #include "EnemySpawner.generated.h"
 
 UCLASS()
@@ -12,12 +13,10 @@ class GAME_API AEnemySpawner : public AActor
 {
 	GENERATED_BODY()
 	
-public:	
-	// Sets default values for this actor's properties
+public:
 	AEnemySpawner();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
@@ -28,15 +27,17 @@ public:
     
     TSubclassOf<AActor> whichEnemy() const;
     
+    ASpawnPoint* whichSpawnPoint() const;
+    
 private:
     static constexpr int RAND_SPAWN_UPPER = 510;
-    static constexpr int RAND_SPAWN_LOWER = 490;
-    
-    static constexpr int RAND_LOCATION_UPPER = 1400;
-    static constexpr int RAND_LOCATION_LOWER = 800;
+    static constexpr int RAND_SPAWN_LOWER = 480;
     
     UPROPERTY(EditAnywhere, Category = "Enemy Spawning")
     TArray<TSubclassOf<AActor>> EnemyTypes;
     
+    UPROPERTY(EditAnywhere, Category = "Spawn Points")
+    TArray<ASpawnPoint*> spawnPoints;
+
     bool shouldSpawnEnemy() const;
 };

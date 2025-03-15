@@ -1,4 +1,4 @@
-#include "Items/Enemies/EnemySpawner.h"  // Must be the first include.
+#include "Items/Enemies/EnemySpawner.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Engine/Engine.h"
 #include "GameFramework/PlayerController.h"
@@ -35,43 +35,16 @@ void AEnemySpawner::spawnEnemy(TSubclassOf<AActor> EnemyClass) const{
         return;
     }
     
-    UWorld* World = GetWorld();
-    if (!World)
-    {
-        GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, TEXT("Couldn't get world"));
-        return;
+    ASpawnPoint* SpawnPoint = whichSpawnPoint();
+    if (SpawnPoint){
+        SpawnPoint->spawnEnemy(EnemyClass);
     }
-    
-    APlayerController* PC = World->GetFirstPlayerController();
-    if (!PC || !PC->GetPawn())
-    {
-        GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, TEXT("Couldn't get player"));
-        return;
-    }
-    
-    FVector PlayerLocation = PC->GetPawn()->GetActorLocation();
-    
-    
-    float OffsetX = FMath::RandRange(RAND_LOCATION_LOWER, RAND_LOCATION_UPPER) * (FMath::RandBool() ? 1.f : -1.f);
-    float OffsetY = FMath::RandRange(RAND_LOCATION_LOWER, RAND_LOCATION_UPPER) * (FMath::RandBool() ? 1.f : -1.f);
-    
-    FVector SpawnLocation = PlayerLocation + FVector(OffsetX, OffsetY, 0.f);
-    
-    FRotator SpawnRotation = FRotator::ZeroRotator;
-    
-    AActor* SpawnedEnemy = World->SpawnActor<AActor>(EnemyClass, SpawnLocation, SpawnRotation);
-    if (SpawnedEnemy)
-    {
-        // Verify that the spawned actor implements IEnemy.
-        if (SpawnedEnemy->GetClass()->ImplementsInterface(UEnemy::StaticClass()))
-        {
-            GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("Enemy spawned successfully and implements IEnemy!"));
-        }
-        else
-        {
-            GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Spawned actor does NOT implement IEnemy!"));
-        }
-    }
+}
+
+ASpawnPoint* AEnemySpawner::whichSpawnPoint() const{
+    int32 Index = FMath::RandRange(0, spawnPoints.Num() - 1);
+    GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, FString::Printf(TEXT("Index = %d"), Index));
+    return spawnPoints[Index];
 }
 
 
