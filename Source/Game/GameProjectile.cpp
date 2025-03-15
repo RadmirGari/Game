@@ -2,9 +2,12 @@
 
 #include "GameProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Damageable.h"
+#include "Kismet/GameplayStatics.h"
 #include "Components/SphereComponent.h"
 
-AGameProjectile::AGameProjectile() 
+
+AGameProjectile::AGameProjectile()
 {
 	// Use a sphere as a simple collision representation
 	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
@@ -33,11 +36,26 @@ AGameProjectile::AGameProjectile()
 
 void AGameProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	// Only add impulse and destroy projectile if we hit a physics
-	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && OtherComp->IsSimulatingPhysics())
-	{
-		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
+    
+    if(OtherActor == nullptr || OtherActor == this || OtherComp == nullptr){
+        return;
+    }
+    APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+    if(OtherActor == PlayerPawn){
+        return;
+    }
+    
+    if (OtherActor->Implements<UDamageable>()) {
+        IDamageable::Execute_takeDamage(OtherActor, AGameProjectile::getDamage_Implementation());
+    }
+    
+    if (OtherComp->IsSimulatingPhysics()){
+       OtherComp->AddImpulseAtLocation(ProjectileMovement->Velocity * 10.0f, Hit.ImpactPoint);
+   }
+    
+    Destroy();
+}
 
-		Destroy();
-	}
+int AGameProjectile::getDamage_Implementation(){
+    return AGameProjectile::DAMAGE;
 }
