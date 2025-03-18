@@ -167,7 +167,6 @@ int ABasicEnemy::getDamage_Implementation(){
 void ABasicEnemy::takeDamage_Implementation(int damage)
 {
     health -= damage;
-    GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, FString::Printf(TEXT("Health: %d"), health));
     if (health <= 0)
     {
         Destroy();

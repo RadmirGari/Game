@@ -71,6 +71,7 @@ public:
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
     static constexpr int START_HEALTH = 100;
     int health;
-
+    
+    virtual void BeginPlay();
 };
 

@@ -18,7 +18,6 @@ void AEnemySpawner::BeginPlay(){
 void AEnemySpawner::Tick(float DeltaTime){
     Super::Tick(DeltaTime);
     if (shouldSpawnEnemy()){
-        GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, TEXT("Should spawn"));
         spawnEnemy(whichEnemy());
     }
 }
@@ -43,7 +42,6 @@ void AEnemySpawner::spawnEnemy(TSubclassOf<AActor> EnemyClass) const{
 
 ASpawnPoint* AEnemySpawner::whichSpawnPoint() const{
     int32 Index = FMath::RandRange(0, spawnPoints.Num() - 1);
-    GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, FString::Printf(TEXT("Index = %d"), Index));
     return spawnPoints[Index];
 }
 

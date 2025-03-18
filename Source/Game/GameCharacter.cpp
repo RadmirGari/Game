@@ -8,6 +8,8 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Kismet/GameplayStatics.h"
+#include "GameFramework/PlayerController.h"
 #include "InputActionValue.h"
 #include "Engine/LocalPlayer.h"
 
@@ -105,6 +107,12 @@ void AGameCharacter::takeDamage_Implementation(int damage){
     health = health - damage;
     GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("Health: %d"), health));
     if(health <= 0){
-        GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("You died"));
+        UGameplayStatics::OpenLevel(GetWorld(), FName("MainMenuLevel"));
     }
+}
+
+
+void AGameCharacter::BeginPlay()
+{
+    Super::BeginPlay();
 }

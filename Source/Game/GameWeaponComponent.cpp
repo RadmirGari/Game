@@ -24,7 +24,6 @@ UGameWeaponComponent::UGameWeaponComponent()
 
 void UGameWeaponComponent::use_Implementation()
 {
-    GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Working"));
 	if (Character == nullptr || Character->GetController() == nullptr)
 	{
 
