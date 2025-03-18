@@ -11,6 +11,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerController.h"
 #include "InputActionValue.h"
+#include "Blueprint/UserWidget.h"
+#include "Engine/World.h"
 #include "Engine/LocalPlayer.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
@@ -107,6 +109,11 @@ void AGameCharacter::takeDamage_Implementation(int damage){
     health = health - damage;
     GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("Health: %d"), health));
     if(health <= 0){
+        if (CurrentWidget){
+            CurrentWidget->RemoveFromParent();
+            CurrentWidget = nullptr;
+        }
+        Destroy();
         UGameplayStatics::OpenLevel(GetWorld(), FName("MainMenuLevel"));
     }
 }
@@ -115,4 +122,24 @@ void AGameCharacter::takeDamage_Implementation(int damage){
 void AGameCharacter::BeginPlay()
 {
     Super::BeginPlay();
+    
+    FString CurrentLevelName = GetWorld()->GetMapName();
+    if (HUDWidgetClass){
+        CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), HUDWidgetClass);
+        if (CurrentWidget)
+        {
+            CurrentWidget->AddToViewport();
+        }
+    }
+
 }
+
+int AGameCharacter::getHealth() const {
+    return health;
+}
+
+
+int AGameCharacter::getMaxHealth() const {
+    return AGameCharacter::START_HEALTH;
+}
+
