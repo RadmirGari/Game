@@ -10,7 +10,7 @@
 ABasicEnemy::ABasicEnemy()
 {
     PrimaryActorTick.bCanEverTick = true;
-
+    AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
     // Initialize health
     health = STARTING_HEALTH;
     isSensingPlayer = false;
@@ -98,6 +98,10 @@ void ABasicEnemy::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
     APawn* SeenPawn = Cast<APawn>(Actor);
     if (!SeenPawn) return;
+    
+    if (!SeenPawn->IsPlayerControlled()){
+        return;
+    }
 
     if (!Stimulus.WasSuccessfullySensed()){
         isSensingPlayer = false;
@@ -120,6 +124,11 @@ void ABasicEnemy::FollowPlayer()
     if (!AIController)
     {
         return;
+    }
+    
+    if (moveAnimation && GetMesh()->GetAnimInstance()){
+        GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, TEXT("wat"));
+        GetMesh()->GetAnimInstance()->Montage_Play(moveAnimation);
     }
     
     AIController->MoveToActor(TargetPawn, ABasicEnemy::MIN_DISTANCE);
@@ -148,10 +157,6 @@ void ABasicEnemy::attack()
        return;
    }
 
-    if (AttackMontage && GetMesh()->GetAnimInstance()){
-        GetMesh()->GetAnimInstance()->Montage_Play(AttackMontage);
-    }
-
    IDamageable::Execute_takeDamage(TargetPawn, ABasicEnemy::getDamage_Implementation());
 }
 
@@ -162,7 +167,6 @@ int ABasicEnemy::getDamage_Implementation(){
 void ABasicEnemy::takeDamage_Implementation(int damage)
 {
     health -= damage;
-    GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, FString::Printf(TEXT("Health: %d"), health));
     if (health <= 0)
     {
         Destroy();

@@ -69,8 +69,23 @@ public:
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
+    
     static constexpr int START_HEALTH = 100;
     int health;
-
+    
+    
+    UFUNCTION(BlueprintCallable, Category = "Health")
+    int getHealth() const;
+    
+    UFUNCTION(BlueprintCallable, Category = "Health")
+    int getMaxHealth() const;
+    
+    virtual void BeginPlay();
+    
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI")
+    TSubclassOf<UUserWidget> HUDWidgetClass;
+    
+    UPROPERTY()
+    UUserWidget* CurrentWidget;
 };
 
