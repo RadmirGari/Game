@@ -30,7 +30,9 @@ public:
     ASpawnPoint* whichSpawnPoint() const;
     
 private:
+    //DEFAULT 510
     static constexpr int RAND_SPAWN_UPPER = 510;
+    //DEFAULT 480
     static constexpr int RAND_SPAWN_LOWER = 480;
     
     UPROPERTY(EditAnywhere, Category = "Enemy Spawning")

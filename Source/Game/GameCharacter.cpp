@@ -123,7 +123,6 @@ void AGameCharacter::BeginPlay()
 {
     Super::BeginPlay();
     
-    FString CurrentLevelName = GetWorld()->GetMapName();
     if (HUDWidgetClass){
         CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), HUDWidgetClass);
         if (CurrentWidget)

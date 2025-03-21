@@ -23,8 +23,8 @@ ABasicEnemy::ABasicEnemy()
     SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("SightConfig"));
     if (SightConfig)
     {
-        SightConfig->SightRadius = 1000.f;
-        SightConfig->LoseSightRadius = 1200.f;
+        SightConfig->SightRadius = 1500.f;
+        SightConfig->LoseSightRadius = 1700.f;
         SightConfig->PeripheralVisionAngleDegrees = 180.f;
         SightConfig->SetMaxAge(5.0f);
         SightConfig->DetectionByAffiliation.bDetectEnemies = true;
@@ -127,7 +127,6 @@ void ABasicEnemy::FollowPlayer()
     }
     
     if (moveAnimation && GetMesh()->GetAnimInstance()){
-        GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, TEXT("wat"));
         GetMesh()->GetAnimInstance()->Montage_Play(moveAnimation);
     }
     

@@ -36,6 +36,7 @@ void AEnemySpawner::spawnEnemy(TSubclassOf<AActor> EnemyClass) const{
     
     ASpawnPoint* SpawnPoint = whichSpawnPoint();
     if (SpawnPoint){
+        GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, TEXT("Not enemy class??"));
         SpawnPoint->spawnEnemy(EnemyClass);
     }
 }
